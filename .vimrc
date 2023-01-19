@@ -19,6 +19,11 @@ call plug#begin()
   Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
   Plug 'editorconfig/editorconfig-vim'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+  Plug 'ngmy/vim-rubocop'
+  Plug 'posva/vim-vue'
+  Plug 'digitaltoad/vim-pug'
 call plug#end()
 
 let mapleader=" " 
@@ -35,8 +40,15 @@ set ignorecase
 set smartcase
 set nowrap
 set clipboard=unnamed
+
+set t_8f=\[[38;2;%lu;%lu;%lum
+set t_8b=\[[48;2;%lu;%lu;%lum
+set termguicolors
+
 " set tabstop=2
+set shiftwidth=2
 set autoindent
+
 " set clipboard=exclude:.*
 nnoremap <expr> n 'Nn'[v:searchforward] . 'zz'
 nnoremap <expr> N 'nN'[v:searchforward] . 'zz'
@@ -46,8 +58,9 @@ xnoremap <silent> <C-k> :move-2<CR>gv
 nnoremap <silent> <C-j> :move+<CR>
 xnoremap <silent> <C-j> :move'>+<CR>gv
 " Save file
-nnoremap <C-s> :w<CR>
+" nnoremap <C-s> :w<CR>
 set foldmethod=manual
+
 " copying to leader
 nnoremap <leader>y "ayy
 xnoremap <leader>y "ay
@@ -55,6 +68,8 @@ nnoremap <leader>p "ap
 xnoremap <leader>p "ap
 " reload vim
 nnoremap <leader>rv :source ~/.vimrc<CR>
+" mouse functions
+set mouse=a
 
 " ################################################
 " moving between windows
@@ -79,7 +94,7 @@ let g:terminal_color_5 = 'green'
 " Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<C-l>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 " let g:UltiSnipsListSnippets="<leader>s"
@@ -142,9 +157,13 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled=1
 let g:airline_powerline_fonts = 1
 let g:airline_theme='base16'
+
 set background=dark
 colorscheme gruvbox
 autocmd ColorScheme * highlight! link SignColumn LineNr
+let g:gruvbox_transparent_bg = 1 
+hi NonText ctermbg=none
+hi Normal guibg=NONE ctermbg=NONE
 
 " ################################################
 " Git-gutter 
@@ -173,6 +192,43 @@ let g:rspec_command = "!rspec --color {spec} "
 let g:rspec_runner = "os_x_iterm2"
 
 " ###############################################
+" Rubocop
+" ###############################################
+map <Leader>rc :!rubocop -a %<CR>
+
+" ###############################################
+" Prettier
+" ###############################################
+map <Leader>rp :Prettier<CR><bar>:w<CR>
+let g:prettier#quickfix_enabled = 0
+let g:prettier#autoformat = 0
+let g:prettier#exec_cmd_path = "/usr/local/bin/prettier"
+
+" ###############################################
 " rails
 " ###############################################
 let g:rails_ctags_arguments = ['--languages=Ruby']
+
+" ###############################################
+" COC for ruby 
+" ###############################################
+inoremap <silent><expr> <tab>
+      \ coc#pum#visible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ CheckBackspace() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gD <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_global_extensions = ['coc-solargraph']
+let g:coc_snippet_next = '<tab>'
+
+

@@ -130,6 +130,7 @@ alias vimrc="vim ~/.vimrc"
 # RAILS REQUEST GRAPHQL 
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES                                                                                                   
 export PATH="$PATH:/Users/dmoreno/BinFiles/"
+export PATH="$PATH:/Users/dmoreno/BinFiles/teleport/"
 export PGGSSENCMODE=disable
 
 # flutter
