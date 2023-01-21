@@ -24,6 +24,7 @@ call plug#begin()
   Plug 'ngmy/vim-rubocop'
   Plug 'posva/vim-vue'
   Plug 'digitaltoad/vim-pug'
+  Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 let mapleader=" " 
@@ -52,11 +53,6 @@ set autoindent
 " set clipboard=exclude:.*
 nnoremap <expr> n 'Nn'[v:searchforward] . 'zz'
 nnoremap <expr> N 'nN'[v:searchforward] . 'zz'
-" Below allow me to move lines up and down
-nnoremap <silent> <C-k> :move-2<CR>
-xnoremap <silent> <C-k> :move-2<CR>gv
-nnoremap <silent> <C-j> :move+<CR>
-xnoremap <silent> <C-j> :move'>+<CR>gv
 " Save file
 " nnoremap <C-s> :w<CR>
 set foldmethod=manual
@@ -145,9 +141,16 @@ nnoremap <Leader>- :12winc <<CR>
 " FZF 
 " ################################################
 nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
-let g:fzf_preview_window = []
+let g:fzf_preview_window = ['right,right,50%,<70(up,40%)', 'ctrl-/']
 " Global search 
 map <C-F> :Ag<CR>
+
+if exists('$TMUX')
+  let g:fzf_layout = { 'tmux': '-p90%,65%' }
+else
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+endif
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " ################################################
 " airline integration 
@@ -231,4 +234,11 @@ let g:coc_snippet_next = '<tab>'
 let g:coc_global_extensions = ['coc-solargraph']
 let g:coc_snippet_next = '<tab>'
 
+let g:tmux_navigator_no_mappings = 1
+
+noremap <silent> <C-h> :<C-U>TmuxNavigateLeft<cr>
+noremap <silent> <C-j> :<C-U>TmuxNavigateDown<cr>
+noremap <silent> <C-k> :<C-U>TmuxNavigateUp<cr>
+noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
+" noremap <silent> {Previous-Mapping} :<C-U>TmuxNavigatePrevious<cr>
 
