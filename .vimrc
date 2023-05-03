@@ -19,12 +19,14 @@ call plug#begin()
   Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
   Plug 'editorconfig/editorconfig-vim'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
   Plug 'ngmy/vim-rubocop'
   Plug 'posva/vim-vue'
   Plug 'digitaltoad/vim-pug'
   Plug 'christoomey/vim-tmux-navigator'
+  Plug 'qpkorr/vim-bufkill'
+  Plug 'edkolev/tmuxline.vim'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 let mapleader=" " 
@@ -46,6 +48,9 @@ set t_8f=\[[38;2;%lu;%lu;%lum
 set t_8b=\[[48;2;%lu;%lu;%lum
 set termguicolors
 
+" Set vsplit to the right
+set splitright 
+
 " set tabstop=2
 set shiftwidth=2
 set autoindent
@@ -66,6 +71,10 @@ xnoremap <leader>p "ap
 nnoremap <leader>rv :source ~/.vimrc<CR>
 " mouse functions
 set mouse=a
+
+" Custom commands
+command! Dev :G checkout dev
+
 
 " ################################################
 " moving between windows
@@ -111,7 +120,11 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 " buffers 
 nnoremap <Tab> :bn<CR>
 nnoremap <S-Tab> :bp<CR>
+" Close buffer but not split
+" b# -> change to previous buffer bd# -> delete previous buffer
+" nnoremap <leader>ww :b#<bar>bd#<CR>
 nnoremap <leader>ww :bd<CR>
+nnoremap <leader>o :on<CR>
 " tabs
 nnoremap <leader>w :tabclose<CR>
 nnoremap <C-h> gT
@@ -145,11 +158,11 @@ let g:fzf_preview_window = ['right,right,50%,<70(up,40%)', 'ctrl-/']
 " Global search 
 map <C-F> :Ag<CR>
 
-if exists('$TMUX')
-  let g:fzf_layout = { 'tmux': '-p90%,65%' }
-else
-  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-endif
+" if exists('$TMUX')
+"   let g:fzf_layout = { 'tmux': '-p90%,65%' }
+" else
+"   let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+" endif
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " ################################################
@@ -157,14 +170,22 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 " ################################################
 syntax on
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#branch#enabled=1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='base16'
+let g:airline_theme='hybridline'
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_section_y = 0
 
+" ################################################
+" grubox theme 
+" ################################################
 set background=dark
 colorscheme gruvbox
 autocmd ColorScheme * highlight! link SignColumn LineNr
 let g:gruvbox_transparent_bg = 1 
+let g:gruvbox_contrast_dark='soft'
+let g:gruvbox_guisp_fallback='bg'
 hi NonText ctermbg=none
 hi Normal guibg=NONE ctermbg=NONE
 
@@ -181,6 +202,7 @@ nmap <leader>gf :GitGutterFold<CR>
 nmap <leader>gd :GitGutterDiffOrig<CR>
 nmap <leader>gu :GitGutterUndoHunk<CR>
 nmap <Leader>gp :GitGutterPreviewHunk<CR>
+let g:GitGutterLineNrHighlightsEnable = 1
 
 " ###############################################
 " RSPEC
@@ -235,6 +257,7 @@ let g:coc_global_extensions = ['coc-solargraph']
 let g:coc_snippet_next = '<tab>'
 
 let g:tmux_navigator_no_mappings = 1
+let g:tmux_navigator_disable_when_zoomed = 1
 
 noremap <silent> <C-h> :<C-U>TmuxNavigateLeft<cr>
 noremap <silent> <C-j> :<C-U>TmuxNavigateDown<cr>
