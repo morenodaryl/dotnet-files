@@ -3,6 +3,7 @@
 " ################################################
 call plug#begin()
   Plug 'preservim/nerdtree'
+  Plug 'ryanoasis/vim-devicons'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   Plug 'mattn/emmet-vim'
@@ -10,7 +11,6 @@ call plug#begin()
   Plug 'vim-airline/vim-airline-themes'
   Plug 'https://github.com/airblade/vim-gitgutter.git'
   Plug 'https://github.com/tpope/vim-fugitive.git'
-  Plug 'NLKNguyen/papercolor-theme'
   Plug 'https://github.com/tpope/vim-surround.git'
   Plug 'thoughtbot/vim-rspec'
   Plug 'https://github.com/tpope/vim-rails'
@@ -24,7 +24,6 @@ call plug#begin()
   Plug 'posva/vim-vue'
   Plug 'digitaltoad/vim-pug'
   Plug 'christoomey/vim-tmux-navigator'
-  Plug 'qpkorr/vim-bufkill'
   Plug 'edkolev/tmuxline.vim'
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
@@ -118,8 +117,8 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 " TABS
 " ################################################
 " buffers 
-nnoremap <Tab> :bn<CR>
-nnoremap <S-Tab> :bp<CR>
+nnoremap <leader>k :bn<CR>
+nnoremap <leader>j :bp<CR>
 " Close buffer but not split
 " b# -> change to previous buffer bd# -> delete previous buffer
 " nnoremap <leader>ww :b#<bar>bd#<CR>
@@ -140,10 +139,10 @@ nnoremap <Leader>7 b7
 nnoremap <Leader>8 b8
 nnoremap <Leader>9 b9
 " move between splits
-nmap <silent> <leader>k :wincmd k<CR>
-nmap <silent> <leader>j :wincmd j<CR>
-nmap <silent> <leader>h :wincmd h<CR>
-nmap <silent> <leader>l :wincmd l<CR>
+" nmap <silent> <leader>k :wincmd k<CR>
+" nmap <silent> <leader>j :wincmd j<CR>
+" nmap <silent> <leader>h :wincmd h<CR>
+" nmap <silent> <leader>l :wincmd l<CR>
 " resize splits
 nnoremap <Leader>+ :12winc +<CR>
 nnoremap <Leader>_ :12winc -<CR>
@@ -157,6 +156,7 @@ nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --excl
 let g:fzf_preview_window = ['right,right,50%,<70(up,40%)', 'ctrl-/']
 " Global search 
 map <C-F> :Ag<CR>
+map <leader>b :Buffers<CR>
 
 " if exists('$TMUX')
 "   let g:fzf_layout = { 'tmux': '-p90%,65%' }
@@ -175,6 +175,8 @@ let g:airline#extensions#branch#enabled=1
 let g:airline_powerline_fonts = 1
 let g:airline_theme='hybridline'
 let g:airline#extensions#tabline#formatter = 'unique_tail'
+" let g:airline_section_b = '%{airline#extensions#branch#get_head()}'
+" let g:airline_section_b = ''
 let g:airline_section_y = 0
 
 " ################################################
@@ -195,14 +197,16 @@ hi Normal guibg=NONE ctermbg=NONE
 highlight GitGutterAdd    guifg=#85FF00 ctermfg=2
 highlight GitGutterChange guifg=#fcb900 ctermfg=3
 highlight GitGutterDelete guifg=#d0021b ctermfg=1
-nmap <Leader>hr  <Plug>GitGutterRevertHunk
+" nmap <Leader>hr  <Plug>GitGutterRevertHunk
 nmap <leader>] <Plug>(GitGutterNextHunk)
 nmap <leader>[ <Plug>(GitGutterPrevHunk)
 nmap <leader>gf :GitGutterFold<CR>
 nmap <leader>gd :GitGutterDiffOrig<CR>
 nmap <leader>gu :GitGutterUndoHunk<CR>
 nmap <Leader>gp :GitGutterPreviewHunk<CR>
+nmap <Leader>gs :GitGutterStageHunk<CR>
 let g:GitGutterLineNrHighlightsEnable = 1
+let g:gitgutter_map_keys = 0
 
 " ###############################################
 " RSPEC
@@ -224,7 +228,9 @@ map <Leader>rc :!rubocop -a %<CR>
 " ###############################################
 " Prettier
 " ###############################################
-map <Leader>rp :Prettier<CR><bar>:w<CR>
+" map <Leader>rp :!yarn prettier --write %<CR><bar>:w<CR>
+" map <Leader>rp :!yarn prettier --write %<CR>
+nmap <Leader>rp :!yarn eslint --fix --format=codeframe --max-warnings=0 --ext js,vue,ts %<CR>
 let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
 let g:prettier#exec_cmd_path = "/usr/local/bin/prettier"
@@ -263,5 +269,13 @@ noremap <silent> <C-h> :<C-U>TmuxNavigateLeft<cr>
 noremap <silent> <C-j> :<C-U>TmuxNavigateDown<cr>
 noremap <silent> <C-k> :<C-U>TmuxNavigateUp<cr>
 noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
-" noremap <silent> {Previous-Mapping} :<C-U>TmuxNavigatePrevious<cr>
 
+let g:tmuxline_preset = {
+      \ 'a'    : ['#S'],
+      \ 'b'    : ['#(gitmux -cfg $HOME/.gitmux.conf "#{pane_current_path}")'],
+      \ 'win'  : '#I:#W#F',
+      \ 'cwin' : '#I:#W#F',
+      \ 'z'    : '%H:%M %d-%b-%y',
+      \ 'x'    : '',
+      \ 'options': {'status-justify': 'left'}
+\}
