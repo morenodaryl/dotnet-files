@@ -9,7 +9,15 @@ return require('packer').startup(function(use)
     requires = { {'nvim-lua/plenary.nvim'} }
   }
 
+  use 'navarasu/onedark.nvim'
+
+  use "lukas-reineke/indent-blankline.nvim"
+
+  use 'neovim/nvim-lspconfig'
+
   -- use {'junegunn/fzf'}
   -- use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
 end)
+
+

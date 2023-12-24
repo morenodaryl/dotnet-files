@@ -35,6 +35,7 @@ nnoremap <SPACE> <Nop>
 " ################################################
 inoremap jk <ESC>
 :set number relativenumber
+" :set number norelativenumber
 :hi LineNr ctermfg=4
 set hlsearch
 set incsearch
@@ -43,8 +44,8 @@ set smartcase
 set nowrap
 set clipboard=unnamed
 
-set t_8f=\[[38;2;%lu;%lu;%lum
-set t_8b=\[[48;2;%lu;%lu;%lum
+" set t_8f=\[[38;2;%lu;%lu;%lum
+" set t_8b=\[[48;2;%lu;%lu;%lum
 set termguicolors
 
 " Set vsplit to the right
@@ -67,13 +68,16 @@ xnoremap <leader>y "ay
 nnoremap <leader>p "ap
 xnoremap <leader>p "ap
 " reload vim
-nnoremap <leader>rv :source ~/.vimrc<CR>
+nnoremap <leader>rv :source ~/.config/nvim/init.lua<CR>
 " mouse functions
 set mouse=a
 
 " Custom commands
 command! Dev :G checkout dev
 
+" Comments fir .vue files
+autocmd FileType vue setlocal commentstring=//\ %s
+autocmd FileType vue setlocal formatprg=vetur
 
 " ################################################
 " moving between windows
@@ -153,10 +157,13 @@ nnoremap <Leader>- :12winc <<CR>
 " FZF 
 " ################################################
 nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
-let g:fzf_preview_window = ['right,right,50%,<70(up,40%)', 'ctrl-/']
+let g:fzf_preview_window = ['right,right,50%,<70(up,50%)', 'ctrl-/']
+
+let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.7 } }
 " Global search 
 map <C-F> :Ag<CR>
 map <leader>b :Buffers<CR>
+map <leader>gh :BCommits<CR>
 
 " if exists('$TMUX')
 "   let g:fzf_layout = { 'tmux': '-p90%,65%' }
@@ -212,10 +219,14 @@ let g:gitgutter_map_keys = 0
 " RSPEC
 " ###############################################
 " To separate two commands use <bar>
-map <Leader>rf :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'rspec " . expand('%:p') . "' Enter"<CR><CR>
-map <Leader>rl :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'rspec " . expand('%:p') . ":" . line(".") . "' Enter"<CR><CR>
-map <Leader>rk :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'rspec' Up Enter"<CR><CR>
-map <Leader>rs :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'rails s' Enter"<CR><CR>
+
+" let g:my_tmux_gargetsession_name:window_nass.pane_number
+" let g:my_tmux_target = "DS:testing.0" 
+let g:my_tmux_target = "1" " panel 1 of current windopw
+map <Leader>rf :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . "' Enter"<CR><CR>
+map <Leader>rl :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . ":" . line(".") . "' Enter"<CR><CR>
+map <Leader>rk :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec' Up Enter"<CR><CR>
+map <Leader>rs :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rails s' Enter"<CR><CR>
 " map <Leader>rg :call RunAllSpecs()<CR>
 let g:rspec_command = "!rspec --color {spec} "
 let g:rspec_runner = "os_x_iterm2"
@@ -224,12 +235,15 @@ let g:rspec_runner = "os_x_iterm2"
 " Rubocop
 " ###############################################
 map <Leader>rc :!rubocop -a %<CR>
+" nmap <Leader>rc :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'rubocop -a " . expand('%:p') . "' Enter"<CR><CR>
 
 " ###############################################
 " Prettier
 " ###############################################
 " map <Leader>rp :!yarn prettier --write %<CR><bar>:w<CR>
 " map <Leader>rp :!yarn prettier --write %<CR>
+"
+" nmap <Leader>rp :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'yarn eslint --fix --format=codeframe --max-warnings=0 --ext js,vue,ts " . expand('%:p') . "' Enter"<CR><CR>
 nmap <Leader>rp :!yarn eslint --fix --format=codeframe --max-warnings=0 --ext js,vue,ts %<CR>
 let g:prettier#quickfix_enabled = 0
 let g:prettier#autoformat = 0
@@ -257,10 +271,20 @@ endfunction
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+" quick fix
+nmap <leader>qf <Plug>(coc-fix-current) 
+" refactor selected
+xmap <silent> <leader>re <Plug>(coc-codeaction-refactor-selected)
+nmap <leader>qd :CocDiagnostics<cr>
 
 let g:coc_snippet_next = '<tab>'
 let g:coc_global_extensions = ['coc-solargraph']
 let g:coc_snippet_next = '<tab>'
+
+" ## PRETTIFY
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
 
 let g:tmux_navigator_no_mappings = 1
 let g:tmux_navigator_disable_when_zoomed = 1
@@ -272,10 +296,8 @@ noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
 
 let g:tmuxline_preset = {
       \ 'a'    : ['#S'],
-      \ 'b'    : ['#(gitmux -cfg $HOME/.gitmux.conf "#{pane_current_path}")'],
       \ 'win'  : '#I:#W#F',
       \ 'cwin' : '#I:#W#F',
       \ 'z'    : '%H:%M %d-%b-%y',
-      \ 'x'    : '',
-      \ 'options': {'status-justify': 'left'}
+      \ 'options': {'status-justify': 'center'}
 \}
