@@ -126,7 +126,7 @@ nnoremap <leader>j :bp<CR>
 " Close buffer but not split
 " b# -> change to previous buffer bd# -> delete previous buffer
 " nnoremap <leader>ww :b#<bar>bd#<CR>
-nnoremap <leader>ww :bd<CR>
+" nnoremap <leader>ww :bd<CR>
 nnoremap <leader>o :on<CR>
 " tabs
 nnoremap <leader>w :tabclose<CR>
@@ -221,12 +221,14 @@ let g:gitgutter_map_keys = 0
 " To separate two commands use <bar>
 
 " let g:my_tmux_gargetsession_name:window_nass.pane_number
-" let g:my_tmux_target = "DS:testing.0" 
-let g:my_tmux_target = "1" " panel 1 of current windopw
-map <Leader>rf :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . "' Enter"<CR><CR>
-map <Leader>rl :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . ":" . line(".") . "' Enter"<CR><CR>
-map <Leader>rk :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec' Up Enter"<CR><CR>
-map <Leader>rs :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rails s' Enter"<CR><CR>
+let g:my_tmux_target = "DS:testing.0" 
+" let g:my_tmux_target = "1" " panel 1 of current windopw
+map <silent><Leader>rf :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . " -f p' Enter"<CR><CR>
+map <silent><Leader>rl :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . ":" . line(".") . "' Enter"<CR><CR>
+map <silent><Leader>rk :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec' Up Enter"<CR><CR>
+map <silent><Leader>rs :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rails s' Enter"<CR><CR>
+map <silent><Leader>rq :exe "!tmux send -t " . g:my_tmux_target . " 'exit-program' Enter"<CR><CR>
+" map <Leader>rq :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'exit'"<CR><CR>
 " map <Leader>rg :call RunAllSpecs()<CR>
 let g:rspec_command = "!rspec --color {spec} "
 let g:rspec_runner = "os_x_iterm2"
@@ -271,6 +273,7 @@ endfunction
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
 " quick fix
 nmap <leader>qf <Plug>(coc-fix-current) 
 " refactor selected

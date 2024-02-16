@@ -23,6 +23,7 @@ fi
 cp "$HOME/.config/nvim/init.lua" .config/nvim/init.lua
 cp "$HOME/.config/nvim/vimrc.vim" .config/nvim/vimrc.vim
 cp "$HOME/.config/nvim/lua/plugins.lua" .config/nvim/lua/plugins.lua
+cp "$HOME/.config/nvim/coc-settings.json" .config/nvim/coc-settings.json
 cp "$HOME/.vimrc" .vimrc
 cp "$HOME/.tmux.conf" .tmux.conf
 

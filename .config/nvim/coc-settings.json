@@ -1,0 +1,52 @@
+{
+  "languageserver": {
+    "ruby-lsp": {
+      "filetypes": ["ruby"],
+      "command": "ruby-lsp",
+      "initializationOptions": {
+	"experimentalFeaturesEnabled": false,
+	"enabledFeatures": [
+	  "codeActions",
+	  "diagnostics",
+	  "documentHighlights",
+	  "documentLink",
+	  "documentSymbols",
+	  "foldingRanges",
+	  "formatting",
+	  "hover",
+	  "inlayHint",
+	  "onTypeFormatting",
+	  "selectionRanges",
+	  "semanticHighlighting",
+	  "completion"
+	],
+	"formatter": "rubocop"
+      }
+    }
+  },
+  "vetur.format.defaultFormatter.html": "prettier",
+  "vetur.format.defaultFormatter.js": "prettier-eslint",
+  "vetur.format.defaultFormatter.less": "prettier",
+  "vetur.format.defaultFormatter.postcss": "prettier",
+  "vetur.format.defaultFormatter.scss": "prettier",
+  "vetur.format.defaultFormatter.stylus": "stylus-supremacy",
+  "vetur.format.defaultFormatter.ts": "prettier",
+  "vetur.format.defaultFormatter.sass": "sass-formatter",
+  "vetur.format.defaultFormatter.css": "prettier",
+  "vetur.validation.template": false,
+  "vetur.completion.tagCasing": "initial",
+  "eslint.enable": true,
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  },
+  "eslint.autoFixOnSave": false,
+  "eslint.run": "onSave",
+  "snippets.ultisnips.pythonPrompt": false,
+  "solargraph.diagnostics": true,
+  "solargraph.hover": true,
+  "solargraph.completion": true,
+  "solargraph.formatting": true,
+  "solargraph.autoformat": true,
+  "hover.target": "preview",
+  "hover.previewMaxHeight": 20
+}
