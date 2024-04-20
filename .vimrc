@@ -2,30 +2,23 @@
 " PLUGINS
 " ################################################
 call plug#begin()
-  Plug 'preservim/nerdtree'
   Plug 'ryanoasis/vim-devicons'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   Plug 'mattn/emmet-vim'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
   Plug 'https://github.com/airblade/vim-gitgutter.git'
   Plug 'https://github.com/tpope/vim-fugitive.git'
   Plug 'https://github.com/tpope/vim-surround.git'
-  Plug 'thoughtbot/vim-rspec'
   Plug 'https://github.com/tpope/vim-rails'
   Plug 'https://github.com/tpope/vim-commentary'
   Plug 'morhetz/gruvbox'
   Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
   Plug 'editorconfig/editorconfig-vim'
-  Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
-  Plug 'ngmy/vim-rubocop'
   Plug 'posva/vim-vue'
   Plug 'digitaltoad/vim-pug'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'edkolev/tmuxline.vim'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 let mapleader=" " 
@@ -67,34 +60,19 @@ nnoremap <leader>y "ayy
 xnoremap <leader>y "ay
 nnoremap <leader>p "ap
 xnoremap <leader>p "ap
+
 " reload vim
 nnoremap <leader>rv :source ~/.config/nvim/init.lua<CR>
-" mouse functions
-set mouse=a
-
-" Custom commands
-command! Dev :G checkout dev
 
 " Comments fir .vue files
 autocmd FileType vue setlocal commentstring=//\ %s
 autocmd FileType vue setlocal formatprg=vetur
 
 " ################################################
-" moving between windows
-" ################################################
-" nnoremap <leader>w <C-w>
-nnoremap <leader>wj <C-w>j
-nnoremap <leader>wk <C-w>k
-nnoremap <leader>wh <C-w>h
-nnoremap <leader>wl <C-w>l
-
-" ################################################
 " Command mode
 " ################################################
 cnoremap <C-p> <Up>
 cnoremap <C-n> <down>
-let g:terminal_color_4 = '#ff0000'
-let g:terminal_color_5 = 'green'
 
 " ################################################
 " snippets
@@ -118,15 +96,10 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 " nnoremap <C-t> :NERDTreeFind<CR>
 
 " ################################################
-" TABS
+" TABS BUFFERS
 " ################################################
-" buffers 
 nnoremap <leader>k :bn<CR>
 nnoremap <leader>j :bp<CR>
-" Close buffer but not split
-" b# -> change to previous buffer bd# -> delete previous buffer
-" nnoremap <leader>ww :b#<bar>bd#<CR>
-" nnoremap <leader>ww :bd<CR>
 nnoremap <leader>o :on<CR>
 " tabs
 nnoremap <leader>w :tabclose<CR>
@@ -142,11 +115,6 @@ nnoremap <Leader>6 b6
 nnoremap <Leader>7 b7
 nnoremap <Leader>8 b8
 nnoremap <Leader>9 b9
-" move between splits
-" nmap <silent> <leader>k :wincmd k<CR>
-" nmap <silent> <leader>j :wincmd j<CR>
-" nmap <silent> <leader>h :wincmd h<CR>
-" nmap <silent> <leader>l :wincmd l<CR>
 " resize splits
 nnoremap <Leader>+ :12winc +<CR>
 nnoremap <Leader>_ :12winc -<CR>
@@ -176,15 +144,15 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 " airline integration 
 " ################################################
 syntax on
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#branch#enabled=1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='hybridline'
+let g:airline_theme='minimalist'
 let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_section_y = 0
 " let g:airline_section_b = '%{airline#extensions#branch#get_head()}'
 " let g:airline_section_b = ''
-let g:airline_section_y = 0
 
 " ################################################
 " grubox theme 
@@ -216,40 +184,31 @@ let g:GitGutterLineNrHighlightsEnable = 1
 let g:gitgutter_map_keys = 0
 
 " ###############################################
-" RSPEC
+" RSPEC TMUX KEYBINDING
 " ###############################################
 " To separate two commands use <bar>
 
 " let g:my_tmux_gargetsession_name:window_nass.pane_number
-let g:my_tmux_target = "DS:testing.0" 
 " let g:my_tmux_target = "1" " panel 1 of current windopw
+let g:my_tmux_target = "DS:testing.0" 
 map <silent><Leader>rf :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . " -f p' Enter"<CR><CR>
-map <silent><Leader>rl :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . ":" . line(".") . "' Enter"<CR><CR>
-map <silent><Leader>rk :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec' Up Enter"<CR><CR>
-map <silent><Leader>rs :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rails s' Enter"<CR><CR>
+map <silent><Leader>rl :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . ":" . line(".") . " -f d' Enter"<CR><CR>
+map <silent><Leader>rk :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec ' Up Enter"<CR><CR>
 map <silent><Leader>rq :exe "!tmux send -t " . g:my_tmux_target . " 'exit-program' Enter"<CR><CR>
-" map <Leader>rq :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'exit'"<CR><CR>
-" map <Leader>rg :call RunAllSpecs()<CR>
-let g:rspec_command = "!rspec --color {spec} "
-let g:rspec_runner = "os_x_iterm2"
+map <silent><Leader>ry :exe "!tmux send -t 2.0 'yarn serve' Enter"<CR><CR>
+map <silent><Leader>rs :exe "!tmux send -t 3.0 'rails s' Enter"<CR><CR>
 
 " ###############################################
-" Rubocop
+" Rubocop KEYBINDING
 " ###############################################
 map <Leader>rc :!rubocop -a %<CR>
+" NOTE: below if you want to have it in another pane
 " nmap <Leader>rc :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'rubocop -a " . expand('%:p') . "' Enter"<CR><CR>
 
 " ###############################################
-" Prettier
+" Prettier KEYBINDING
 " ###############################################
-" map <Leader>rp :!yarn prettier --write %<CR><bar>:w<CR>
-" map <Leader>rp :!yarn prettier --write %<CR>
-"
-" nmap <Leader>rp :exe "!tmux send-keys -X -t 1 'cancel'"<CR><CR> <bar> :exe "!tmux send -t 1 'yarn eslint --fix --format=codeframe --max-warnings=0 --ext js,vue,ts " . expand('%:p') . "' Enter"<CR><CR>
 nmap <Leader>rp :!yarn eslint --fix --format=codeframe --max-warnings=0 --ext js,vue,ts %<CR>
-let g:prettier#quickfix_enabled = 0
-let g:prettier#autoformat = 0
-let g:prettier#exec_cmd_path = "/usr/local/bin/prettier"
 
 " ###############################################
 " rails
@@ -278,17 +237,14 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <leader>qf <Plug>(coc-fix-current) 
 " refactor selected
 xmap <silent> <leader>re <Plug>(coc-codeaction-refactor-selected)
-nmap <leader>qd :CocDiagnostics<cr>
+" nmap <leader>qd :CocDiagnostics<cr>
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 let g:coc_snippet_next = '<tab>'
 let g:coc_global_extensions = ['coc-solargraph']
 let g:coc_snippet_next = '<tab>'
 
 " ## PRETTIFY
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-
 let g:tmux_navigator_no_mappings = 1
 let g:tmux_navigator_disable_when_zoomed = 1
 
@@ -297,10 +253,12 @@ noremap <silent> <C-j> :<C-U>TmuxNavigateDown<cr>
 noremap <silent> <C-k> :<C-U>TmuxNavigateUp<cr>
 noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
 
+" let g:tmuxline_theme = 'jellybeans'
+" let g:tmuxline_preset = 'full'
 let g:tmuxline_preset = {
       \ 'a'    : ['#S'],
       \ 'win'  : '#I:#W#F',
       \ 'cwin' : '#I:#W#F',
-      \ 'z'    : '%H:%M %d-%b-%y',
+      \ 'z'    : '#{weather} %H:%M %d-%b-%y',
       \ 'options': {'status-justify': 'center'}
 \}

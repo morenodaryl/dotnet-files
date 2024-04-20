@@ -1,41 +1,52 @@
+---------------------------------------------------
+-- Initial setup ----------------------------------
+---------------------------------------------------
 vim.cmd('source ~/.config/nvim/vimrc.vim')
-
 require('packer').install()
--- require('onedark').setup {
---     style = 'darker'
--- }
--- require('onedark').load()
--- require('telescope').load_extension('fzf')
-
-
--- vim.opt.list = true
--- vim.opt.listchars:append "eol:↴"
--- vim.opt.termguicolors = true
 
 vim.cmd [[highlight IndentBlanklineIndent1 guifg=#2B2A2B gui=nocombine]]
 vim.cmd [[highlight IndentBlanklineIndent2 guifg=#3d3d3d gui=nocombine]]
+vim.o.mouse = 'a'
 
--- require("indent_blankline").setup {
---   -- show_end_of_line = true,
---   show_current_context = true,
---   show_current_context_start = true,
---   char_highlight_list = {
---     "IndentBlanklineIndent1",
---     "IndentBlanklineIndent2",
---   },
--- }
+---------------------------------------------------
+-- LSP --------------------------------------------
+---------------------------------------------------
+local lspconfig = require'lspconfig'
+lspconfig.solargraph.setup{}
+lspconfig.eslint.setup{}
+-- lspconfig.tsserver.setup{}
+-- lspconfig.vuels.setup{}
+lspconfig.ruby_lsp.setup{
+  on_attach = function(client, bufnr)
+    print('Language server attached')
+  end,
+  settings = {
+   solargraph = {
+      diagnostics = false
+    }
+  },
+  init_options = {
+    formatting = false
+  }
+}
 
+---------------------------------------------------
+-- Initial Plugin Setuip --------------------------
+---------------------------------------------------
 require('telescope').setup({
   defaults = {
     layout_strategy = 'vertical'
-    -- layout_config = {
-    --   vertical = { width = 0.5 }
-    --   -- other layout configuration here
-    -- },
-    -- other defaults configuration here
   },
-  -- other configuration values here
 })
+
+vim.opt.termguicolors = true
+
+require("autoclose").setup()
+---------------------------------------------------
+-- Mapping ----------------------------------------
+---------------------------------------------------
+vim.keymap.set("n", "<leader>qd", function() require("trouble").toggle() end)
+-- vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
 
 vim.keymap.set('n', '<leader>ww', function()
   if vim.fn.winnr('$') > 1 then
@@ -46,6 +57,7 @@ vim.keymap.set('n', '<leader>ww', function()
 end, { expr = true, replace_keycodes = true, silent = true})
 
 local keyset = vim.keymap.set
+
 -- Use K to show documentation in preview window
 function _G.show_docs()
     local cw = vim.fn.expand('<cword>')
@@ -58,3 +70,10 @@ function _G.show_docs()
     end
 end
 keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
+
+vim.api.nvim_create_augroup("CocGroup", {})
+vim.api.nvim_create_autocmd("CursorHold", {
+    group = "CocGroup",
+    command = "silent call CocActionAsync('highlight')",
+    desc = "Highlight symbol under cursor on CursorHold"
+})

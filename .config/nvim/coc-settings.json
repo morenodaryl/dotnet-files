@@ -20,7 +20,8 @@
 	  "semanticHighlighting",
 	  "completion"
 	],
-	"formatter": "rubocop"
+	"formatter": "rubocop",
+	"autoFixOnSave": true
       }
     }
   },
@@ -33,13 +34,14 @@
   "vetur.format.defaultFormatter.ts": "prettier",
   "vetur.format.defaultFormatter.sass": "sass-formatter",
   "vetur.format.defaultFormatter.css": "prettier",
+  "vetur.validation.templateProps": true,
   "vetur.validation.template": false,
   "vetur.completion.tagCasing": "initial",
   "eslint.enable": true,
   "eslint.codeAction.showDocumentation": {
     "enable": true
   },
-  "eslint.autoFixOnSave": false,
+  "eslint.autoFixOnSave": true,
   "eslint.run": "onSave",
   "snippets.ultisnips.pythonPrompt": false,
   "solargraph.diagnostics": true,
@@ -47,6 +49,9 @@
   "solargraph.completion": true,
   "solargraph.formatting": true,
   "solargraph.autoformat": true,
-  "hover.target": "preview",
-  "hover.previewMaxHeight": 20
+  "hover.target": "float",
+  "hover.previewMaxHeight": 20,
+  "hover.floatConfig": {
+    "maxWidth": 90
+  }
 }
