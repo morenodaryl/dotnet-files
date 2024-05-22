@@ -8,56 +8,18 @@ vim.cmd [[highlight IndentBlanklineIndent1 guifg=#2B2A2B gui=nocombine]]
 vim.cmd [[highlight IndentBlanklineIndent2 guifg=#3d3d3d gui=nocombine]]
 vim.o.mouse = 'a'
 
-require("autoclose").setup({
-   keys = {
-      ["("] = { escape = false, close = true, pair = "()" },
-      ["["] = { escape = false, close = true, pair = "[]" },
-      ["{"] = { escape = false, close = true, pair = "{}" },
-
-      [">"] = { escape = true, close = false, pair = "<>" },
-      [")"] = { escape = true, close = false, pair = "()" },
-      ["]"] = { escape = true, close = false, pair = "[]" },
-      ["}"] = { escape = true, close = false, pair = "{}" },
-
-      ['"'] = { escape = true, close = true, pair = '""' },
-      ["'"] = { escape = true, close = true, pair = "''" },
-      ["`"] = { escape = true, close = true, pair = "``" },
-   },
-   options = {
-      disabled_filetypes = { },
-      disable_when_touch = false,
-      touch_regex = "[%w(%[{]",
-      pair_spaces = false,
-      auto_indent = true,
-      disable_command_mode = true,
-   },
-})
 ---------------------------------------------------
 -- Initial Plugin Setuip --------------------------
 ---------------------------------------------------
 require('telescope').setup({
-  defaults = {
-    layout_strategy = 'vertical'
-  },
+  defaults = { layout_strategy = 'vertical' },
 })
 
 vim.opt.termguicolors = true
 
-require("autoclose").setup()
-
-require('nvim-treesitter.configs').setup{
-  ignore_install = { "all" },
-  auto_install = false,
-  highlight = {
-    enable = true,
-    disable = { "c", "vim", "vimdoc", "vue" }
-  }
-}
-
 ---------------------------------------------------
 -- Mapping ----------------------------------------
 ---------------------------------------------------
--- vim.keymap.set("n", "<leader>qd", function() require("trouble").toggle() end)
 vim.keymap.set('n', '<leader>rw', ':%s/\\<<C-r><C-w>\\>//g<left><left>', { silent = true })
 
 vim.keymap.set('n', '<leader>ww', function()

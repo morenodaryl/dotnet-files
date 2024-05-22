@@ -76,10 +76,9 @@ autocmd FileType vue setlocal formatprg=vetur
 " COPILOT 
 " ###############################################
 imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
-imap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
 imap <silent><C-k> <Plug>(copilot-next)
 imap <silent><C-j> <Plug>(copilot-previous)
-imap <silent><C-s> <Plug>(copilot-suggest)
+imap <silent><C-h> <Plug>(copilot-suggest)
 let g:copilot_no_tab_map = v:true
 
 " ################################################
@@ -285,9 +284,11 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gD <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>qf <Plug>(coc-fix-current) 
+nmap <leader>rn <Plug>(coc-rename)
 
 xmap <silent><leader>a  <Plug>(coc-codeaction-cursor)
 nmap <silent><leader>a  <Plug>(coc-codeaction-selected)
+inoremap <silent><expr><C-s> coc#refresh()
 
 nmap <leader>qd :CocDiagnostics<cr>
 vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
