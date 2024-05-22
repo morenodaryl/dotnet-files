@@ -5,6 +5,8 @@ call plug#begin()
   Plug 'ryanoasis/vim-devicons'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
   Plug 'mattn/emmet-vim'
   Plug 'https://github.com/airblade/vim-gitgutter.git'
   Plug 'https://github.com/tpope/vim-fugitive.git'
@@ -19,6 +21,8 @@ call plug#begin()
   Plug 'digitaltoad/vim-pug'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'edkolev/tmuxline.vim'
+  Plug 'wakatime/vim-wakatime'
+  Plug 'preservim/nerdtree'
 call plug#end()
 
 let mapleader=" " 
@@ -67,6 +71,16 @@ nnoremap <leader>rv :source ~/.config/nvim/init.lua<CR>
 " Comments fir .vue files
 autocmd FileType vue setlocal commentstring=//\ %s
 autocmd FileType vue setlocal formatprg=vetur
+
+" ###############################################
+" COPILOT 
+" ###############################################
+imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
+imap <silent><script><expr> <C-l> copilot#Accept("\<CR>")
+imap <silent><C-k> <Plug>(copilot-next)
+imap <silent><C-j> <Plug>(copilot-previous)
+imap <silent><C-s> <Plug>(copilot-suggest)
+let g:copilot_no_tab_map = v:true
 
 " ################################################
 " Command mode
@@ -148,11 +162,28 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#branch#enabled=1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='minimalist'
+let g:airline_theme='base16'
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_section_y = 0
-" let g:airline_section_b = '%{airline#extensions#branch#get_head()}'
-" let g:airline_section_b = ''
+let g:airline_section_z = '%l:%c'
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.branch = '🛠️'
+let g:airline_symbols.dirty='⚡️'
+
+let g:airline_mode_map = {
+      \ 'c'      : 'C',
+      \ 'i'      : 'I',
+      \ 'ic'     : 'I',
+      \ 'ix'     : 'I',
+      \ 'n'      : 'N',
+      \ 'ni'     : 'N',
+      \ 'no'     : 'N',
+      \ }
+
+" next line modifies NORMAL mode to show only N and not -- NORMAL --
 
 " ################################################
 " grubox theme 
@@ -216,35 +247,8 @@ nmap <Leader>rp :!yarn eslint --fix --format=codeframe --max-warnings=0 --ext js
 let g:rails_ctags_arguments = ['--languages=Ruby']
 
 " ###############################################
-" COC for ruby 
+" TMUX navigator 
 " ###############################################
-inoremap <silent><expr> <tab>
-      \ coc#pum#visible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ CheckBackspace() ? "\<TAB>" :
-      \ coc#refresh()
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gD <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" quick fix
-nmap <leader>qf <Plug>(coc-fix-current) 
-" refactor selected
-xmap <silent> <leader>re <Plug>(coc-codeaction-refactor-selected)
-" nmap <leader>qd :CocDiagnostics<cr>
-vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
-
-let g:coc_snippet_next = '<tab>'
-let g:coc_global_extensions = ['coc-solargraph']
-let g:coc_snippet_next = '<tab>'
-
-" ## PRETTIFY
 let g:tmux_navigator_no_mappings = 1
 let g:tmux_navigator_disable_when_zoomed = 1
 
@@ -262,3 +266,34 @@ let g:tmuxline_preset = {
       \ 'z'    : '#{weather} %H:%M %d-%b-%y',
       \ 'options': {'status-justify': 'center'}
 \}
+
+" ###############################################
+" COC 
+" ###############################################
+inoremap <silent><expr> <tab>
+      \ coc#pum#visible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ CheckBackspace() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gD <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>qf <Plug>(coc-fix-current) 
+
+xmap <silent><leader>a  <Plug>(coc-codeaction-cursor)
+nmap <silent><leader>a  <Plug>(coc-codeaction-selected)
+
+nmap <leader>qd :CocDiagnostics<cr>
+vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_global_extensions = ['coc-solargraph']
+let g:coc_snippet_next = '<tab>'
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)

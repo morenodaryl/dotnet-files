@@ -1,6 +1,7 @@
 {
   "languageserver": {
     "ruby-lsp": {
+      "enabled": true,
       "filetypes": ["ruby"],
       "command": "ruby-lsp",
       "initializationOptions": {

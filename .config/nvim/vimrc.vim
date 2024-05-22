@@ -5,4 +5,3 @@ let &packpath = &runtimepath
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 source ~/.vimrc
-
