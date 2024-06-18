@@ -17,13 +17,15 @@ call plug#begin()
   Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
   Plug 'editorconfig/editorconfig-vim'
-  Plug 'posva/vim-vue'
-  Plug 'digitaltoad/vim-pug'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'edkolev/tmuxline.vim'
   Plug 'wakatime/vim-wakatime'
   Plug 'preservim/nerdtree'
+  Plug 'Yggdroot/indentLine'
+  Plug 'digitaltoad/vim-pug'
+  Plug 'posva/vim-vue'
 call plug#end()
+
 
 let mapleader=" " 
 nnoremap <SPACE> <Nop>
@@ -65,12 +67,18 @@ xnoremap <leader>y "ay
 nnoremap <leader>p "ap
 xnoremap <leader>p "ap
 
+
+nnoremap zt ztkj
+
 " reload vim
 nnoremap <leader>rv :source ~/.config/nvim/init.lua<CR>
 
+
+" zt offset of 2
+
 " Comments fir .vue files
-autocmd FileType vue setlocal commentstring=//\ %s
-autocmd FileType vue setlocal formatprg=vetur
+" autocmd FileType vue setlocal commentstring=//\ %s
+" autocmd FileType vue setlocal formatprg=vetur
 
 " ###############################################
 " COPILOT 
@@ -78,7 +86,7 @@ autocmd FileType vue setlocal formatprg=vetur
 imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
 imap <silent><C-k> <Plug>(copilot-next)
 imap <silent><C-j> <Plug>(copilot-previous)
-imap <silent><C-h> <Plug>(copilot-suggest)
+imap <silent><C-c> <Plug>(copilot-suggest)
 let g:copilot_no_tab_map = v:true
 
 " ################################################
@@ -93,7 +101,7 @@ cnoremap <C-n> <down>
 " Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
-let g:UltiSnipsExpandTrigger="<C-l>"
+" let g:UltiSnipsExpandTrigger="<C-l>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 " let g:UltiSnipsListSnippets="<leader>s"
@@ -159,10 +167,12 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 syntax on
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#buffer_nr_show=1
-let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#branch#enabled=0
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_powerline_fonts = 1
 let g:airline_theme='base16'
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),80)}'
+let g:airline_inactive_c = 1
 let g:airline_section_y = 0
 let g:airline_section_z = '%l:%c'
 let g:airline_powerline_fonts = 1
@@ -170,7 +180,7 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline_symbols.branch = '🛠️'
-let g:airline_symbols.dirty='⚡️'
+let g:airline_symbols.dirty=' ⚡️'
 
 let g:airline_mode_map = {
       \ 'c'      : 'C',
@@ -206,6 +216,7 @@ highlight GitGutterDelete guifg=#d0021b ctermfg=1
 nmap <leader>] <Plug>(GitGutterNextHunk)
 nmap <leader>[ <Plug>(GitGutterPrevHunk)
 nmap <leader>gf :GitGutterFold<CR>
+nmap <silent><leader>zr :normal! ggVGzr<CR><ESC>gg<CR>
 nmap <leader>gd :GitGutterDiffOrig<CR>
 nmap <leader>gu :GitGutterUndoHunk<CR>
 nmap <Leader>gp :GitGutterPreviewHunk<CR>
@@ -260,11 +271,16 @@ noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
 " let g:tmuxline_preset = 'full'
 let g:tmuxline_preset = {
       \ 'a'    : ['#S'],
+      \ 'c'    : ['🛠️ #(git branch --show-current)'],
       \ 'win'  : '#I:#W#F',
       \ 'cwin' : '#I:#W#F',
-      \ 'z'    : '#{weather} %H:%M %d-%b-%y',
+      \ 'z'    : '%H:%M %d-%b-%y',
       \ 'options': {'status-justify': 'center'}
 \}
+" ###############################################
+" Ident Line 
+" ###############################################
+let g:indentLine_char_list = ['|', '¦', '┆']
 
 " ###############################################
 " COC 
