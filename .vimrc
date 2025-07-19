@@ -8,11 +8,11 @@ call plug#begin()
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'mattn/emmet-vim'
-  Plug 'https://github.com/airblade/vim-gitgutter.git'
+  " Plug 'https://github.com/airblade/vim-gitgutter.git'
   Plug 'https://github.com/tpope/vim-fugitive.git'
   Plug 'https://github.com/tpope/vim-surround.git'
   Plug 'https://github.com/tpope/vim-rails'
-  Plug 'https://github.com/tpope/vim-commentary'
+  Plug 'https://github.com/tomtom/tcomment_vim'
   Plug 'morhetz/gruvbox'
   Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
@@ -49,6 +49,8 @@ set termguicolors
 
 " Set vsplit to the right
 set splitright 
+" set horizontal split at the bottom
+set splitbelow
 
 " set tabstop=2
 set shiftwidth=2
@@ -62,17 +64,18 @@ nnoremap <expr> N 'nN'[v:searchforward] . 'zz'
 set foldmethod=manual
 
 " copying to leader
-nnoremap <leader>y "ayy
-xnoremap <leader>y "ay
-nnoremap <leader>p "ap
-xnoremap <leader>p "ap
-
+nnoremap <leader>y "+yy
+xnoremap <leader>y "+y
+nnoremap <leader>p "+p
+xnoremap <leader>p "+p
 
 nnoremap zt ztkj
 
 " reload vim
 nnoremap <leader>rv :source ~/.config/nvim/init.lua<CR>
 
+
+command! G :execute 'Git' | only
 
 " zt offset of 2
 
@@ -83,11 +86,11 @@ nnoremap <leader>rv :source ~/.config/nvim/init.lua<CR>
 " ###############################################
 " COPILOT 
 " ###############################################
-imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
-imap <silent><C-k> <Plug>(copilot-next)
-imap <silent><C-j> <Plug>(copilot-previous)
-imap <silent><C-c> <Plug>(copilot-suggest)
-let g:copilot_no_tab_map = v:true
+" imap <silent><script><expr> <C-L> copilot#Accept("\<CR>")
+" imap <silent><C-k> <Plug>(copilot-next)
+" imap <silent><C-j> <Plug>(copilot-previous)
+" imap <silent><C-c> <Plug>(copilot-suggest)
+" let g:copilot_no_tab_map = v:true
 
 " ################################################
 " Command mode
@@ -102,8 +105,8 @@ cnoremap <C-n> <down>
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
 " let g:UltiSnipsExpandTrigger="<C-l>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 " let g:UltiSnipsListSnippets="<leader>s"
 
 " If you want :UltiSnipsEdit to split your window.
@@ -147,8 +150,9 @@ nnoremap <Leader>- :12winc <<CR>
 " ################################################
 nnoremap <expr> <C-p> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
 let g:fzf_preview_window = ['right,right,50%,<70(up,50%)', 'ctrl-/']
+" let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.7 } }
+let g:fzf_layout = { 'down': '~45%' }
 
-let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.7 } }
 " Global search 
 map <C-F> :Ag<CR>
 map <leader>b :Buffers<CR>
@@ -170,7 +174,8 @@ let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#branch#enabled=0
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_powerline_fonts = 1
-let g:airline_theme='base16'
+let g:airline_theme='laederon'
+" let g:airline_theme='base16'
 let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),80)}'
 let g:airline_inactive_c = 1
 let g:airline_section_y = 0
@@ -209,20 +214,27 @@ hi Normal guibg=NONE ctermbg=NONE
 " ################################################
 " Git-gutter 
 " ################################################
-highlight GitGutterAdd    guifg=#85FF00 ctermfg=2
-highlight GitGutterChange guifg=#fcb900 ctermfg=3
-highlight GitGutterDelete guifg=#d0021b ctermfg=1
-" nmap <Leader>hr  <Plug>GitGutterRevertHunk
-nmap <leader>] <Plug>(GitGutterNextHunk)
-nmap <leader>[ <Plug>(GitGutterPrevHunk)
-nmap <leader>gf :GitGutterFold<CR>
-nmap <silent><leader>zr :normal! ggVGzr<CR><ESC>gg<CR>
-nmap <leader>gd :GitGutterDiffOrig<CR>
-nmap <leader>gu :GitGutterUndoHunk<CR>
-nmap <Leader>gp :GitGutterPreviewHunk<CR>
-nmap <Leader>gs :GitGutterStageHunk<CR>
-let g:GitGutterLineNrHighlightsEnable = 1
-let g:gitgutter_map_keys = 0
+" highlight GitGutterAdd    guifg=#85FF00 ctermfg=2
+" highlight GitGutterChange guifg=#fcb900 ctermfg=3
+" highlight GitGutterDelete guifg=#d0021b ctermfg=1
+" " nmap <Leader>hr  <Plug>GitGutterRevertHunk
+" nmap <leader>[ <Plug>(GitGutterPrevHunk)
+" nmap <leader>gf :GitGutterFold<CR>
+" nmap <silent><leader>zr :normal! ggVGzr<CR><ESC>gg<CR>
+" nmap <leader>gd :GitGutterDiffOrig<CR>
+" nmap <leader>gu :GitGutterUndoHunk<CR>
+" nmap <Leader>gp :GitGutterPreviewHunk<CR>
+" nmap <Leader>gs :GitGutterStageHunk<CR>
+" let g:GitGutterLineNrHighlightsEnable = 1
+" let g:gitgutter_map_keys = 0
+
+nmap <silent><leader>] :Gitsigns next_hunk<CR>
+nmap <silent><leader>[ :Gitsigns prev_hunk<CR>
+nmap <silent><leader>gs :Gitsigns stage_hunk<CR>
+nmap <silent><leader>gu :Gitsigns undo_stage_hunk<CR>
+nmap <silent><leader>gr :Gitsigns reset_hunk<CR>
+nmap <silent><leader>gp :Gitsigns preview_hunk<CR>
+nmap <silent><leader>gb :Gitsigns blame_line<CR>
 
 " ###############################################
 " RSPEC TMUX KEYBINDING
@@ -231,13 +243,16 @@ let g:gitgutter_map_keys = 0
 
 " let g:my_tmux_gargetsession_name:window_nass.pane_number
 " let g:my_tmux_target = "1" " panel 1 of current windopw
-let g:my_tmux_target = "DS:testing.0" 
+" let g:my_tmux_target = "DS-testing:1.0" 
+let g:my_tmux_target = 3
 map <silent><Leader>rf :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . " -f p' Enter"<CR><CR>
 map <silent><Leader>rl :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec " . expand('%:p') . ":" . line(".") . " -f d' Enter"<CR><CR>
 map <silent><Leader>rk :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'rspec ' Up Enter"<CR><CR>
 map <silent><Leader>rq :exe "!tmux send -t " . g:my_tmux_target . " 'exit-program' Enter"<CR><CR>
-map <silent><Leader>ry :exe "!tmux send -t 2.0 'yarn serve' Enter"<CR><CR>
+map <silent><Leader>rb :exe "!tmux send -t " . g:my_tmux_target . " 'break '" .  expand('%:p') . ":" . line(".") . " Enter"<CR><CR>
+" map <silent><Leader>ry :exe "!tmux send -t " . g:my_tmux_target . " 'yarn serve' Enter"<CR><CR>
 map <silent><Leader>rs :exe "!tmux send -t 3.0 'rails s' Enter"<CR><CR>
+map <silent><Leader>rj :exe "!tmux send-keys -X -t " . g:my_tmux_target . " 'cancel'"<CR><CR> <bar> :exe "!tmux send -t " . g:my_tmux_target . " 'yarn vitest " . expand('%:p') . "' Enter"<CR><CR>
 
 " ###############################################
 " Rubocop KEYBINDING
@@ -249,7 +264,9 @@ map <Leader>rc :!rubocop -a %<CR>
 " ###############################################
 " Prettier KEYBINDING
 " ###############################################
-nmap <Leader>rp :!yarn eslint --fix --format=codeframe --max-warnings=0 --ext js,vue,ts %<CR>
+" nmap <Leader>rp :!yarn eslint --fix --format=codeframe --max-warnings=0 --ext js,vue,ts %<CR>
+nmap <Leader>rp :!yarn eslint --fix --ext .vue,.ts,.js %<CR>
+" lint:fix
 
 " ###############################################
 " rails

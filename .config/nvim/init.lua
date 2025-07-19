@@ -17,6 +17,17 @@ require('telescope').setup({
 
 vim.opt.termguicolors = true
 
+require('gitsigns').setup({
+  preview_config = {
+    -- Options passed to nvim_open_win
+    border = 'single',
+    style = 'minimal',
+    relative = 'cursor',
+    row = 1,
+    col = 1
+  },
+})
+
 ---------------------------------------------------
 -- Mapping ----------------------------------------
 ---------------------------------------------------
@@ -51,3 +62,4 @@ vim.api.nvim_create_autocmd("CursorHold", {
     command = "silent call CocActionAsync('highlight')",
     desc = "Highlight symbol under cursor on CursorHold"
 })
+

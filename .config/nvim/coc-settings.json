@@ -1,4 +1,5 @@
 {
+  "coc.preferences.enableLocalSettings": true,
   "languageserver": {
     "ruby-lsp": {
       "enabled": true,
@@ -54,5 +55,24 @@
   "hover.previewMaxHeight": 20,
   "hover.floatConfig": {
     "maxWidth": 90
-  }
+  },
+  "cSpell.language": "en",
+  "cSpell.userWords": [
+    "autoformat",
+    "solargraph",
+    "ultisnips"
+  ],
+  "cSpell.enabledLanguageIds": [
+    "ruby",
+    "csharp",
+    "go",
+    "javascript",
+    "javascriptreact",
+    "markdown",
+    "php",
+    "plaintext",
+    "typescript",
+    "typescriptreact",
+    "yml"
+  ]
 }
