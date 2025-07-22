@@ -28,15 +28,17 @@ return {
           -- NERDTree
           ["<C-t>"] = { "<cmd>Neotree toggle<cr>", desc = "Tree toggle" },
           ["<Leader>n"] = { "<cmd>Neotree reveal<cr>", desc = "Tree reveal" },
+          -- Buffer handling
+          ["<Leader>k"] = { "<cmd>bp<cr>", desc = "Prev buffer" },
+          ["<Leader>j"] = { "<cmd>bn<cr>", desc = "Next buffer" },
+          ["<Leader>o"] = { "<cmd>on<cr>", desc = "buffer only" },
+          ["<Leader>ww"] = { "<cmd>Bdelete<cr>", desc = "Close buffer" },
+          ['<C-H>'] = { '<cmd>BufferLineCyclePrev<cr>', desc = "Buffer prev", silent = true },
+          ['<C-l>'] = { '<cmd>BufferLineCycleNext<cr>', desc = "Buffer next", silent = true },
           -- LSP 
           ["<Leader>a"] = { "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action" },
           -- Reload Astro
           ["<Leader>rv"] = { "<cmd>AstroReload<cr>", desc = "Reload astro" },
-          -- Buffer handling
-          ["<Leader>j"] = { "<cmd>norm [b<cr>", desc = "Next buffer" },
-          ["<Leader>k"] = { "<cmd>norm ]b<cr>", desc = "Prev buffer" },
-          ["<Leader>o"] = { "<cmd>on<cr>", desc = "buffer only" },
-          ["<Leader>ww"] = { "<cmd>bd<cr>", desc = "Close buffer" },
           -- Tmux rails/rspec integration
           ["<Leader>rf"] = { "<cmd>exe \"!tmux send-keys -X -t \" . g:my_tmux_target . \" 'cancel'\"<cr><cr> <bar> :exe \"!tmux send -t \" . g:my_tmux_target . \" 'rspec \" . expand('%:p') . \" -f p' Enter\"<cr><cr>", desc = "run file" },
           ["<Leader>rk"] = { "<cmd>exe \"!tmux send-keys -X -t \" . g:my_tmux_target . \" 'cancel'\"<cr><cr> <bar> :exe \"!tmux send -t \" . g:my_tmux_target . \" 'rspec ' Up Enter\"<cr><cr>" },
