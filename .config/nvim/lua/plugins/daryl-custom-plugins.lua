@@ -1,5 +1,7 @@
 return {
-  { 'junegunn/fzf', build = function() vim.fn['fzf#install']() end },
+  { 'junegunn/fzf', build = function() 
+    vim.fn['fzf#install']() 
+  end },
   { 'junegunn/fzf.vim' },
   { 'ryanoasis/vim-devicons' },
   { 'famiu/bufdelete.nvim' },
@@ -9,12 +11,30 @@ return {
   { 'morhetz/gruvbox' },
   { 'editorconfig/editorconfig-vim' },
   { 'christoomey/vim-tmux-navigator' },
-  { 'preservim/nerdtree' },
   { 'Yggdroot/indentLine' },
-  -- { 'lewis6991/gitsigns.nvim' },
-  { 'digitaltoad/vim-pug' },
-  { 'posva/vim-vue' },
-  { "kdheepak/lazygit.nvim", requires = { "nvim-lua/plenary.nvim" }, },
+  { 'lewis6991/gitsigns.nvim', opts = { add_default_mappings = false } },
+  { 'nvim-lualine/lualine.nvim', 
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    options = {
+      { theme = 'gruvbox' },
+    },
+    config = function()
+      require('lualine').setup()
+    end
+  },
+  {
+    "goolord/alpha-nvim",
+    opts = function(_, opts)
+      -- customize the dashboard header
+      opts.section.header.val = {
+        '.__          ..  .               ',
+        '|  \\ _.._.  .||\\/| _ ._. _ ._  _ ',
+        '|__/(_][  \\_|||  |(_)[  (/,[ )(_)',
+        '          ._|                    '
+      }
+      return opts
+    end,
+  },
   {
     "supermaven-inc/supermaven-nvim",
     config = function()

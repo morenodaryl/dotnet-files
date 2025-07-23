@@ -16,7 +16,9 @@ if not pcall(require, "lazy") then
 end
 
 
+require "vim-default-opt"
 require "lazy_setup"
-require "polish"
+-- require "polish"
 require "config"
+require "custom-keymap"
 

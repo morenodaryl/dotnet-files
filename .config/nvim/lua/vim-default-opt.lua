@@ -32,7 +32,12 @@ vim.indentLine_char_list = {'|', '¦', '┆'}
  
 -- fzf
 
-vim.g.fzf_preview_window = { 'right,right,50%,<70(up,50%)', 'ctrl-/' }
-vim.g.fzf_layout = '{ 'window': { 'width': 0.95, 'height': 0.7 } }'
+vim.cmd [[ let g:fzf_layout = { 'down': '~40%' } ]]
+vim.g.fzf_preview_window = { 'right:50%', 'ctrl-/' }
+vim.g.fzf_history_dir = '~/.local/share/fzf-history'
+
+-- vim.cmd [[ let g:fzf_preview_window = ['right,right,50%,<70(up,50%)', 'ctrl-/'] ]]
+-- vim.g.fzf_preview_window = { 'right,right,50%,<70(up,50%)', 'ctrl-/' }
+-- vim.g.fzf_layout = "{ 'window': { 'width': 0.95, 'height': 0.7 } }"
 -- let g:fzf_preview_window = ['right,right,50%,<70(up,50%)', 'ctrl-/']
 -- let g:fzf_layout = { 'window': { 'width': 0.95, 'height': 0.7 } }
