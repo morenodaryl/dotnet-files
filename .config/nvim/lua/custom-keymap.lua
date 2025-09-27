@@ -23,11 +23,10 @@ function imap(lhs, rhs, opts) return map('i', lhs, rhs, opts) end
 function vmap(lhs, rhs, opts) return map('v', lhs, rhs, opts) end
 function cmap(lhs, rhs, opts) return map('c', lhs, rhs, opts) end
 
-
 cmap('<C-n>', '<down>', { noremap = true })
 cmap('<C-p>', '<Up>', { noremap = true })
 imap('jk', '<Esc>', { noremap = true })
-vmap('<C-r>', '"hy:s/<C-r>h//g<left><left>', { noremap = true })
+vmap('<C-r>', '"hy:%s/<C-r>h//g<left><left>', { noremap = true })
 
 nmap('<Space>', '<Nop>', { noremap = true, silent = true })
 nmap('<C-f>', '<cmd>Ag<cr>', { noremap = true, desc = "FindFiles" })

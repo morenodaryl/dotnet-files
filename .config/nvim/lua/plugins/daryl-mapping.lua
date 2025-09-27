@@ -5,7 +5,8 @@ return {
     opts = {
       mappings = {
         i = {
-          ['jj'] = false
+          ['jj'] = false,
+          ['<c-k>'] = false
         },
         n = {
           -- ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },

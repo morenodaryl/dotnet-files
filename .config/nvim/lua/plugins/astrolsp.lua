@@ -55,6 +55,8 @@ return {
     ---@diagnostic disable: missing-fields
     config = {
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
+      -- setup solargraph to not use definitions
+      solargraph = { definitions = { dynamicRegistration = false } },
     },
     -- customize how language servers are attached
     handlers = {

@@ -15,10 +15,8 @@ if not pcall(require, "lazy") then
   vim.cmd.quit()
 end
 
-
 require "vim-default-opt"
 require "lazy_setup"
 -- require "polish"
 require "config"
 require "custom-keymap"
-

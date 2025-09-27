@@ -18,6 +18,11 @@ if [ ! -d .tmux ]; then
   mkdir -p .tmux
 fi
 
+if [ ! -d .local/share/nvim/lazy/nvim-treesitter/queries ]; then
+  mkdir -p .local/share/nvim/lazy/nvim-treesitter/queries/vue
+  mkdir -p .local/share/nvim/lazy/nvim-treesitter/queries/ruby
+fi
+
 # files
 # cp "$HOME/.config/nvim/vimrc.vim" .config/nvim/vimrc.vim
 cp -a "$HOME/.config/nvim/." .config/nvim/
@@ -25,5 +30,8 @@ cp -a "$HOME/.config/nvim/." .config/nvim/
 # cp "$HOME/.config/nvim/coc-settings.json" .config/nvim/coc-settings.json
 cp "$HOME/.vimrc" .vimrc
 cp "$HOME/.tmux.conf" .tmux.conf
+cp "$HOME/.tmux.conf" .tmux.conf
+cp ~/.local/share/nvim/lazy/nvim-treesitter/queries/vue/**.scm .local/share/nvim/lazy/nvim-treesitter/queries/vue/
+cp ~/.local/share/nvim/lazy/nvim-treesitter/queries/ruby/**.scm .local/share/nvim/lazy/nvim-treesitter/queries/ruby/
 
 echo "DONE ✅"

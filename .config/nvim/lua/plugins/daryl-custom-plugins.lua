@@ -19,7 +19,16 @@ return {
       { theme = 'gruvbox' },
     },
     config = function()
-      require('lualine').setup()
+      require('lualine').setup({
+        sections = {
+          lualine_a = { 'mode' },
+          -- lualine_b = { 'branch' },
+          lualine_c = { { 'filename', path = 1 } },
+          lualine_x = { 'filetype' },
+          lualine_y = { '' },
+          lualine_z = { '' }
+        },
+      })
     end
   },
   {
