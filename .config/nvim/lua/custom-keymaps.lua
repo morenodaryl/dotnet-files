@@ -16,6 +16,18 @@ vim.api.nvim_create_user_command('OpenFiles', function()
   end
 end, {})
 
+vim.api.nvim_create_user_command("ReloadNvChad", function()
+  -- unload all custom modules
+  for name, _ in pairs(package.loaded) do
+    if name:match("^custom") or name:match("^nvchad") then
+      package.loaded[name] = nil
+    end
+  end
+  -- re-source init.lua (the NvChad entry point)
+  dofile(vim.fn.stdpath("config") .. "/init.lua")
+  vim.notify("NvChad reloaded!", vim.log.levels.INFO)
+end, {})
+
 -- Key mappings
 function map(mode, lhs, rhs, opts) vim.keymap.set(mode, lhs, rhs, opts) end
 function nmap(lhs, rhs, opts) return map('n', lhs, rhs, opts) end
@@ -34,7 +46,7 @@ nmap('<C-h>', ':TmuxNavigateLeft<cr>', { noremap = true, silent = true })
 nmap('<C-j>', ':TmuxNavigateDown<cr>', { noremap = true, silent = true })
 nmap('<C-k>', ':TmuxNavigateUp<cr>', { noremap = true, silent = true })
 nmap('<C-l>', ':TmuxNavigateRight<cr>', { noremap = true, silent = true })
-nmap('<C-p>', '<cmd>Telescope find_files<cr>', { noremap = true, desc = "Telescope" })
+nmap('<C-p>', '<cmd>OpenFiles<cr>', { noremap = true, desc = "Telescope" })
 nmap('<C-t>', '<cmd>NvimTreeToggle<cr>', { noremap = true, desc = "Tree toggle" })
 nmap('<leader>+', ':12winc +<CR>', { noremap = true })
 nmap('<leader>-', ':12winc -<CR>', { noremap = true })
@@ -64,7 +76,7 @@ nmap('<leader>rk', function() cancel_tmux_cmd(); vim.cmd("silent! !tmux send -t 
 nmap('<leader>rl', function() tmux_cmd('rspec ' .. vim.fn.expand('%:p') .. ':' .. vim.fn.line('.') .. ' -f d') end, { noremap = true })
 nmap('<leader>rp', ':!yarn eslint --fix --ext .vue,.ts,.js %<CR>', { noremap = true })
 nmap('<leader>rq', function() vim.cmd("silent! !tmux send -t " .. vim.g.my_tmux_target .. " 'exit-program' Enter") end, { noremap = true })
-nmap('<leader>rv', "<cmd>AstroReload<cr>", { desc = "Reload astro" })
+nmap('<leader>rv', "<cmd>ReloadNvChad<cr>", { desc = "Reload astro" })
 nmap('<leader>ww', "<cmd>Bdelete<cr>", { noremap = true, desc = "Close buffer" })
 nmap('[g', function() vim.diagnostic.goto_prev() end, { noremap = true, desc = "Go to prev diagnostic" })
 nmap(']g', function() vim.diagnostic.goto_next() end, { noremap = true, desc = "Go to next diagnostic" })

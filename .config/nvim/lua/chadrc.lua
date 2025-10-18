@@ -6,7 +6,7 @@
 local M = {}
 
 M.base46 = {
-	theme = "onedark",
+	theme = "vscode_dark",
 
 	-- hl_override = {
 	-- 	Comment = { italic = true },
@@ -14,6 +14,14 @@ M.base46 = {
 	-- },
 }
 
+M.hl_override = {
+  Normal = { bg = "none" },
+  NormalNC = { bg = "none" },
+  NormalFloat = { bg = "none" },
+  FloatBorder = { bg = "none" },
+  SignColumn = { bg = "none" },
+  LineNr = { bg = "none" },
+}
 -- M.nvdash = { load_on_startup = true }
 -- M.ui = {
 --       tabufline = {

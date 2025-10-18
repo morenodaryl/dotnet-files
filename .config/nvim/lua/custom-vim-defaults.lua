@@ -34,6 +34,18 @@ vim.cmd [[ let g:fzf_layout = { 'down': '~40%' } ]]
 vim.g.fzf_preview_window = { 'right:50%', 'ctrl-/' }
 vim.g.fzf_history_dir = '~/.local/share/fzf-history'
 
+vim.cmd([[
+  hi Normal guibg=none ctermbg=none
+  hi NormalNC guibg=none ctermbg=none
+]])
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "json", "jsonc" },
+  callback = function()
+    vim.opt_local.conceallevel = 0
+  end,
+})
+
 -- vim.cmd [[ let g:fzf_preview_window = ['right,right,50%,<70(up,50%)', 'ctrl-/'] ]]
 -- vim.g.fzf_preview_window = { 'right,right,50%,<70(up,50%)', 'ctrl-/' }
 -- vim.g.fzf_layout = "{ 'window': { 'width': 0.95, 'height': 0.7 } }"
