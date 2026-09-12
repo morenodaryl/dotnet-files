@@ -1,29 +1,36 @@
-echo 'Copying from home'
+#!/usr/bin/env bash
+#
+# Sync dotfiles from $HOME into this repo.
+# Mirrors the whole ~/.config/nvim tree (LazyVim layout), so new files/dirs are
+# picked up automatically and files deleted at home disappear here too.
 
+set -euo pipefail
 
-config_dir=".config"
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$repo_dir"
 
-rm -rf ./.config/**
-rm -rf ./.tmux/**
+echo "Copying from home"
 
-if [ ! -d "$config_dir/coc" ]; then
-  # -p to create subdirectories
-  mkdir -p .config/coc
-fi
+# Junk that should never be versioned (mirrors ~/.config/nvim/.gitignore).
+nvim_excludes=(
+  --exclude='.git/'
+  --exclude='.claude/'
+  --exclude='.DS_Store'
+  --exclude='*.log'
+  --exclude='tt.*'
+  --exclude='foo.*'
+  --exclude='.tests/'
+  --exclude='.repro/'
+  --exclude='debug/'
+  --exclude='data/'
+  --exclude='doc/tags'
+)
 
-if [ ! -d "$config_dir/nvim" ]; then
-  mkdir -p .config/nvim/lua
-fi
+# whole nvim config tree
+mkdir -p .config/nvim
+rsync -a --delete "${nvim_excludes[@]}" "$HOME/.config/nvim/" .config/nvim/
 
-if [ ! -d .tmux ]; then
-  mkdir -p .tmux
-fi
-
-# files
-cp "$HOME/.config/nvim/init.lua" .config/nvim/init.lua
-cp "$HOME/.config/nvim/vimrc.vim" .config/nvim/vimrc.vim
-cp -a "$HOME/.config/nvim/lua/." .config/nvim/lua/
-cp "$HOME/.config/nvim/coc-settings.json" .config/nvim/coc-settings.json
+# single files
 cp "$HOME/.vimrc" .vimrc
 cp "$HOME/.tmux.conf" .tmux.conf
 
